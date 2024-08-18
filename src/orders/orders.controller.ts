@@ -1,10 +1,11 @@
 import { Controller } from '@nestjs/common';
-import {EventPattern, MessagePattern, Payload} from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { OrdersService } from './orders.service';
 import {
 	ChangeOrderStatusDto,
 	CreateOrderDto,
-	PaginationOrderDto, PaidOrderDto,
+	PaginationOrderDto,
+	PaidOrderDto,
 } from './dto';
 
 @Controller()
@@ -14,7 +15,8 @@ export class OrdersController {
 	@MessagePattern('createOrder')
 	async create(@Payload() createOrderDto: CreateOrderDto) {
 		const order = await this.ordersService.create(createOrderDto);
-		const paymentSession = await this.ordersService.createPaymentSession(order);
+		const paymentSession =
+			await this.ordersService.createPaymentSession(order);
 		return {
 			order,
 			paymentSession,
